@@ -1,0 +1,21 @@
+<clr-vertical-nav [clrVerticalNavCollapsible]="true" [(clrVerticalNavCollapsed)]="collapsed" class="menu-max-height">
+    <div class="menu-separated">
+        <div>
+            <div class="nav-group-content">
+                <button class="menu-parent" (click)="subVisible = !subVisible"
+                    [ngClass]="{'selected': route ==='group' || route ==='onboard', 'no-selected': route !=='group' && route !=='onboard'}">
+                    <div class="text-parent-menu">
+                        ACI
+                    </div>
+                    <clr-icon shape="angle" [ngClass]="{'rotateX': subVisible, 'unrotateX': !subVisible}"></clr-icon>
+                </button>
+            </div>
+            <div *ngIf="subVisible">
+                <a clrVerticalNavLink routerLink="./onboard" class="no-selected"
+                    [ngClass]="{selected: route ==='onboard', 'no-selected': route !=='onboard'}" class="child-menu">
+                    Quick Launch
+                </a>                                
+            </div>
+        </div>
+    </div>
+</clr-vertical-nav>

@@ -1,0 +1,16 @@
+{
+    "urn": "vmware:vcloud:ezdc:aciext",
+    "name": "CISCO - ACI 1 Click Tenant Onboard V1.0",
+    "containerVersion": "9.1.0",
+    "version": "1.0.0",
+    "scope": ["tenant", "service-provider"],
+    "permissions": [],
+    "description": "CISCO APIC ACI Integration Extension.",
+    "vendor": "EZDC",
+    "license": "VMware",
+    "link": "https://github.com/elayaraja-ezdc/ACI",
+    "module": "AciextModule",
+    "route": "aciext"
+}
+
+

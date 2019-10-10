@@ -1,0 +1,532 @@
+<div class="content-area">
+    <h2 class="dashboard-header">Tenant Onboarding</h2>
+    <div class="alert alert-info" role="alert" *ngIf="showOnboardAcknowledge">
+        <div class="alert-items">
+            <div class="alert-item static">
+                <div class="alert-icon-wrapper">
+                    <clr-icon class="alert-icon" shape="info-circle"></clr-icon>
+                </div>
+                <span class="alert-text">Tenant Onboard data sent to ACI.</span>
+            </div>
+        </div>
+        <button type="button" class="close" aria-label="Close">
+            <clr-icon aria-hidden="true" shape="close" (click)="closeOnboardAckAlert()"></clr-icon>
+        </button>
+    </div>
+    <div>
+      <!-- <clr-datagrid [(clrDgSingleSelected)]="selectedOnboard" [clrDgLoading]="onboarddatagridloading">
+        <clr-dg-column>Tenant Onboard</clr-dg-column>  
+        <clr-dg-row *clrDgItems="let onboard of onboards" [clrDgItem]="onboard">
+          <clr-dg-cell>{{onboard.tenantName}}</clr-dg-cell>
+        </clr-dg-row>
+        <clr-dg-footer>
+          {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}} of
+          {{pagination.totalItems}} tenants
+          <clr-dg-pagination #pagination [clrDgPageSize]="10"></clr-dg-pagination>
+        </clr-dg-footer>
+      </clr-datagrid>
+      <button role="tooltip" aria-haspopup="true"
+        class="tooltip tooltip-sm tooltip-top-right hover btn btn-sm btn-link button-refresh" (click)="getOnboards()">
+        <clr-icon shape="refresh"></clr-icon>
+        <span class="tooltip-content tooltip-refresh">Refresh  list</span>
+      </button>-->
+      <button class="btn btn-sm btn-secondary lets-strat-btn" (click)="openOnboardModal()" [disabled]="onboarddatagridloading">Let's Start</button> 
+
+        
+  
+        <!---------------------------CREATE TENANT------------------------------------------------>
+  
+      <form (ngSubmit)="createOnboardSubmit()" [hidden]="submitted" novalidate>
+        <clr-modal [(clrModalOpen)]="onboardaddmodal" [clrModalSize]="'x0.5'">
+          <h3 class="modal-title">ACI Complete Tenant Onboarding Package</h3>
+          <div class="modal-body">
+            <section class="form-block">
+                <!-- <div class="form-line line-description">
+                  <div class="form-group textarea-group" [formGroup]="onboardaddform" style="width: 100%">
+                    <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'tenantName')}">
+                      <input type="text" id="tenantName" formControlName="tenantName" placeholder="Tenant Name(It must be same as VCD Org Name) *" style="width:100%">
+                      <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                        <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                          [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'tenantName')}">
+                        </clr-icon>
+                        <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'tenantName')">Invalid
+                          syntax for login: Valid special characters are: . - _</span>
+                      </a>
+                    </div>
+                  </div>
+                </div> -->
+                <div class="form-line">
+                  <div class="form-group" [formGroup]="onboardaddform">
+                      <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'tenantName')}">
+                          <input type="text" id="tenantName" formControlName="tenantName" placeholder="Tenant Name(Org Name) *">
+                          <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                          <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                              [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'tenantName')}">
+                          </clr-icon>
+                          <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'tenantName')">
+                              Invalid syntax for tenantName: Valid special characters are: . - _</span>
+                          </a> -->
+                          <!-- <a href=".." role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                                <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle">
+                                </clr-icon>
+                                <span class="tooltip-content">Lorem ipsum sit error</span>
+                          </a> -->
+                          <a href="..." title="Tenant Name as VCD Org Name(ex:Org1)" role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                                <clr-icon shape="info-circle" size="24"></clr-icon>
+                                <span class="tooltip-content">Tenant Name as VCD Org Name(ex:Org1)</span>
+                          </a>
+                      </div>
+                  </div>                     
+                  <div class="form-group" [formGroup]="onboardaddform">
+                      <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'vrfName')}">
+                          <input type="text" id="vrfName" formControlName="vrfName" placeholder="VRF Name *">
+                          <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                          <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                              [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'vrfName')}">
+                          </clr-icon>
+                          <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'vrfName')">
+                              Invalid syntax for vrfName: Valid special characters are: . - _</span>
+                          </a> -->
+                          <a href="..." title="VRF Name" role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                                <clr-icon shape="info-circle" size="24"></clr-icon>
+                                <span class="tooltip-content">VRF Name</span>
+                          </a>
+                      </div>
+                  </div>                    
+              </div>
+              <div class="form-line">
+                <div class="form-group" [formGroup]="onboardaddform">
+                  <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'BDName')}">
+                    <input type="text" id="BDName" formControlName="BDName" placeholder="Bridge Domain-1 Name *">
+                    <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                      <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                        [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'BDName')}">
+                      </clr-icon>
+                      <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'BDName')">Invalid
+                        syntax for login: Valid special characters are: . - _</span>
+                    </a> -->
+                    <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                            <clr-icon shape="info-circle" size="24"></clr-icon>
+                            <span class="tooltip-content">Bridge Domain-1 Name</span>
+                      </a>
+                  </div>
+                </div>
+              </div>
+              <div class="form-line">
+                  <div class="form-group" [formGroup]="onboardaddform">
+                      <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'ip1')}">
+                          <input type="text" id="ip1" formControlName="ip1" placeholder="BD1 Subnet-1 GW IP *">
+                          <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                          <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                              [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'ip1')}">
+                          </clr-icon>
+                          <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'ip1')">
+                              Invalid syntax for ip1: Valid special characters are: . - _</span>
+                          </a> -->
+                          <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                                <clr-icon shape="info-circle" size="24"></clr-icon>
+                                <span class="tooltip-content">BD1 Subnet-1 GW IP (ex:53.12.13.20/24)</span>
+                          </a>
+                      </div>
+                  </div>                     
+                  <div class="form-group" [formGroup]="onboardaddform">
+                      <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'ip2')}">
+                          <input type="text" id="ip2" formControlName="ip2" placeholder="BD1 Subnet-2 GW IP *">
+                          <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                          <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                              [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'ip2')}">
+                          </clr-icon>
+                          <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'ip2')">
+                              Invalid syntax for ip2: Valid special characters are: . - _</span>
+                          </a> -->
+                          <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                            <clr-icon shape="info-circle" size="24"></clr-icon>
+                            <span class="tooltip-content">BD1 Subnet-2 GW IP (ex:53.12.13.20/24)</span>
+                          </a>
+                      </div>
+                  </div>                    
+              </div>
+              <div class="form-line">
+                  <div class="form-group" [formGroup]="onboardaddform">
+                    <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'BDName2')}">
+                      <input type="text" id="BDName2" formControlName="BDName2" placeholder="Bridge Domain-2 Name *" >
+                      <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                        <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                          [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'BDName2')}">
+                        </clr-icon>
+                        <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'BDName2')">Invalid
+                          syntax for login: Valid special characters are: . - _</span>
+                      </a> -->
+                      <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                            <clr-icon shape="info-circle" size="24"></clr-icon>
+                            <span class="tooltip-content">Bridge Domain-2 Name</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              <div class="form-line">
+                  <div class="form-group" [formGroup]="onboardaddform">
+                      <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'ip3')}">
+                          <input type="text" id="ip3" formControlName="ip3" placeholder="BD2 Subnet-1 GW IP *">
+                          <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                          <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                              [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'ip3')}">
+                          </clr-icon>
+                          <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'ip3')">
+                              Invalid syntax for ip3: Valid special characters are: . - _</span>
+                          </a> -->
+                          <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                            <clr-icon shape="info-circle" size="24"></clr-icon>
+                            <span class="tooltip-content">BD2 Subnet-1 GW IP (ex:53.12.13.20/24)</span>
+                         </a>
+                      </div>
+                  </div>                     
+                  <div class="form-group" [formGroup]="onboardaddform">
+                      <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'ip4')}">
+                          <input type="text" id="ip4" formControlName="ip4" placeholder="BD2 Subnet-2 GW IP *">
+                          <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                          <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                              [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'ip4')}">
+                          </clr-icon>
+                          <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'ip4')">
+                              Invalid syntax for subnet2ForB21: Valid special characters are: . - _</span>
+                          </a> -->
+                          <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                            <clr-icon shape="info-circle" size="24"></clr-icon>
+                            <span class="tooltip-content">BD2 Subnet-2 GW IP (ex:53.12.13.20/24)</span>
+                         </a>
+                      </div>
+                  </div>                    
+              </div>
+              <div class="form-line">
+                <div class="form-group" [formGroup]="onboardaddform" style="width: 100%">
+                  <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'ApplicationProfileName')}">
+                    <input type="text" id="ApplicationProfileName" formControlName="ApplicationProfileName" placeholder="Application Profile Name *" style="width:100%">
+                    <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                      <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                        [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'ApplicationProfileName')}">
+                      </clr-icon>
+                      <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'ApplicationProfileName')">Invalid
+                        syntax for login: Valid special characters are: . - _</span>
+                    </a> -->
+                    <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                            <clr-icon shape="info-circle" size="24"></clr-icon>
+                            <span class="tooltip-content">Application Profile Name</span>
+                      </a>
+                  </div>
+                </div>
+              </div>
+              <div class="form-line">
+                <div class="form-group" [formGroup]="onboardaddform">
+                  <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'AppEPGName')}">
+                    <input type="text" id="AppEPGName" formControlName="AppEPGName" placeholder="EPG for BD1 *">
+                    <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                      <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                        [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'AppEPGName')}">
+                      </clr-icon>
+                      <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'AppEPGName')">Invalid
+                        syntax for login: Valid special characters are: . - _</span>
+                    </a> -->
+                    <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                            <clr-icon shape="info-circle" size="24"></clr-icon>
+                            <span class="tooltip-content">EPG for BD1</span>
+                      </a>
+                  </div>
+                </div>
+              </div>
+              <div class="form-line">
+                  <div class="form-group" [formGroup]="onboardaddform">
+                      <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'vmm_encp_vlan')}">
+                          <input type="text" id="vmm_encp_vlan" formControlName="vmm_encp_vlan" placeholder="VMM Encap VLAN*">
+                          <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                          <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                              [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'vmm_encp_vlan')}">
+                          </clr-icon>
+                          <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'vmm_encp_vlan')">
+                              Invalid syntax for vmm_encp_vlan: Valid special characters are: . - _</span>
+                          </a> -->
+                          <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                                <clr-icon shape="info-circle" size="24"></clr-icon>
+                                <span class="tooltip-content">VMM Encap VLAN</span>
+                          </a>
+                      </div>
+                  </div>                     
+                  <div class="form-group" [formGroup]="onboardaddform">
+                      <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'vmm_domain_name')}">
+                          <input type="text" id="vmm_domain_name" formControlName="vmm_domain_name" placeholder="VMM Domain Profile
+                          *">
+                          <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                          <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                              [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'vmm_domain_name')}">
+                          </clr-icon>
+                          <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'vmm_domain_name')">
+                              Invalid syntax for vmm_domain_name: Valid special characters are: . - _</span>
+                          </a> -->
+                          <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                                <clr-icon shape="info-circle" size="24"></clr-icon>
+                                <span class="tooltip-content">VMM Domain Profile</span>
+                          </a>
+                      </div>
+                  </div>                    
+              </div>
+              <div class="form-line">
+                <div class="form-group" [formGroup]="onboardaddform" style="width: 100%">
+                  <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'AppEPGName2')}">
+                    <input type="text" id="AppEPGName2" formControlName="AppEPGName2" placeholder="EPG for BD2 *" style="width:100%">
+                    <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                      <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                        [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'AppEPGName2')}">
+                      </clr-icon>
+                      <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'AppEPGName2')">Invalid
+                        syntax for login: Valid special characters are: . - _</span>
+                    </a> -->
+                    <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                            <clr-icon shape="info-circle" size="24"></clr-icon>
+                            <span class="tooltip-content">EPG for BD2</span>
+                      </a>
+                  </div>
+                </div>
+              </div>
+              <div class="form-line">
+                  <div class="form-group" [formGroup]="onboardaddform">
+                      <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'vmm_encp_vlan2')}">
+                          <input type="text" id="vmm_encp_vlan2" formControlName="vmm_encp_vlan2" placeholder="VMM Encap VLAN*">
+                          <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                          <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                              [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'vmm_encp_vlan2')}">
+                          </clr-icon>
+                          <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'vmm_encp_vlan2')">
+                              Invalid syntax for vmm_encp_vlan2: Valid special characters are: . - _</span>
+                          </a> -->
+                          <a href="..."  role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                                <clr-icon shape="info-circle" size="24"></clr-icon>
+                                <span class="tooltip-content">VMM Encap VLAN</span>
+                          </a>
+                      </div>
+                  </div>                     
+                  <div class="form-group" [formGroup]="onboardaddform">
+                      <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'vmm_domain_name2')}">
+                          <input type="text" id="vmm_domain_name2" formControlName="vmm_domain_name2" placeholder="VMM Domain Profile
+                          *">
+                          <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                          <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                              [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'vmm_domain_name2')}">
+                          </clr-icon>
+                          <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'vmm_domain_name2')">
+                              Invalid syntax for vmm_domain_name2: Valid special characters are: . - _</span>
+                          </a> -->
+                          <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                                <clr-icon shape="info-circle" size="24"></clr-icon>
+                                <span class="tooltip-content">VMM Domain Profile</span>
+                          </a>
+                      </div>
+                  </div>                    
+              </div>
+              
+              <div class="form-line">
+                <div class="form-group" [formGroup]="onboardaddform" style="width: 100%">
+                  <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'filterName')}">
+                    <input type="text" id="filterName" formControlName="filterName" placeholder="Filter Name *" style="width:100%">
+                    <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                      <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                        [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'filterName')}">
+                      </clr-icon>
+                      <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'filterName')">Invalid
+                        syntax for login: Valid special characters are: . - _</span>
+                    </a> -->
+                    <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                            <clr-icon shape="info-circle" size="24"></clr-icon>
+                            <span class="tooltip-content">Filter Name</span>
+                      </a>
+                  </div>
+                </div>
+              </div>
+              <div class="form-line">                    
+                <div class="form-group" [formGroup]="onboardaddform">
+                    <clr-select-container style="width: 150px;">
+                        <label>Select Ether Type *</label><br/>
+                        <select clrSelect name="etherT" [(ngModel)]="etherT" formControlName="etherT" style="width: 100%;">
+                            <option value="ip">IP</option>
+                        </select>
+                    </clr-select-container>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+                <div class="form-group" [formGroup]="onboardaddform">
+                  <clr-select-container style="width: 150px;">
+                      <label>Select Protocol *</label><br/>
+                      <select clrSelect name="protocol" [(ngModel)]="protocol" formControlName="protocol" style="width: 100%;">
+                          <option value="tcp">TCP</option>
+                          <option value="icmp">ICMP</option>
+                      </select>
+                  </clr-select-container>
+              </div>                    
+            </div>
+              <div class="form-line">                    
+                  <div class="form-group" [formGroup]="onboardaddform">
+                      <clr-select-container style="width: 150px;">
+                          <label>Destination From Port *</label><br/>
+                          <select clrSelect name="dFromPort" [(ngModel)]="dFromPort" formControlName="dFromPort" style="width: 100%;">
+                              <option value="443">443</option>
+                              <option value="80">80</option>
+                              <option value="22">22</option>
+                          </select>
+                      </clr-select-container>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </div>
+                  <div class="form-group" [formGroup]="onboardaddform">
+                    <clr-select-container style="width: 150px;">
+                        <label>Destination To Port *</label><br/>
+                        <select clrSelect name="dToPort" [(ngModel)]="dToPort" formControlName="dToPort" style="width: 100%;">
+                            <option value="443">443</option>
+                              <option value="80">80</option>
+                              <option value="22">22</option>
+                        </select>
+                    </clr-select-container>
+                </div>                    
+              </div>
+              
+            <div class="form-line">
+                <div class="form-group" [formGroup]="onboardaddform">
+                    <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'contractName')}">
+                        <input type="text" id="contractName" formControlName="contractName" placeholder="Contract Name *">
+                        <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                        <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                            [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'contractName')}">
+                        </clr-icon>
+                        <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'contractName')">
+                            Invalid syntax for contractName: Valid special characters are: . - _</span>
+                        </a> -->
+                        <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                                <clr-icon shape="info-circle" size="24"></clr-icon>
+                                <span class="tooltip-content">Contract Name</span>
+                          </a>
+                    </div>
+                </div>                     
+                <div class="form-group" [formGroup]="onboardaddform">
+                    <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'contractSubjectName')}">
+                        <input type="text" id="contractSubjectName" formControlName="contractSubjectName" placeholder="Subject Name *">
+                        <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                        <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                            [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'contractSubjectName')}">
+                        </clr-icon>
+                        <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'contractSubjectName')">
+                            Invalid syntax for contractSubjectName: Valid special characters are: . - _</span>
+                        </a> -->
+                        <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                                <clr-icon shape="info-circle" size="24"></clr-icon>
+                                <span class="tooltip-content">Subject Name</span>
+                          </a>
+                    </div>
+                </div>                    
+            </div>            
+            <div class="form-line">
+                <div class="form-group" [formGroup]="onboardaddform">
+                    <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'contractFilterName')}">
+                        <input type="text" id="contractFilterName" formControlName="contractFilterName" placeholder="Contract Filter Name *">
+                        <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                        <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                            [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'contractFilterName')}">
+                        </clr-icon>
+                        <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'contractFilterName')">
+                            Invalid syntax for contractFilterName: Valid special characters are: . - _</span>
+                        </a> -->
+                        <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                                <clr-icon shape="info-circle" size="24"></clr-icon>
+                                <span class="tooltip-content">Contract Filter Name</span>
+                          </a>
+                    </div>
+                </div>                     
+                <div class="form-group" [formGroup]="onboardaddform">
+                    <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'contractFilterName1')}">
+                        <input type="hidden" id="contractFilterName1" formControlName="contractFilterName1" placeholder="Contract Subject Name *">
+                    </div>
+                </div>
+                <div class="form-group" [formGroup]="onboardaddform">
+                    <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'contractFilterName2')}">
+                        <input type="hidden" id="contractFilterName2" formControlName="contractFilterName2" placeholder="Contract Filter Name *">
+                    </div>
+                </div>                    
+            </div>
+            <div class="form-line">
+                    <div class="form-group" [formGroup]="onboardaddform">
+                        <h5>Contract Binding</h5>
+                    </div>
+            </div>
+            <div class="form-line">
+                <div class="form-group" [formGroup]="onboardaddform">
+                    <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'source_epgName')}">
+                        <input type="text" id="source_epgName" formControlName="source_epgName" placeholder="Source EPG Name *">
+                        <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                        <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                            [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'source_epgName')}">
+                        </clr-icon>
+                        <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'source_epgName')">
+                            Invalid syntax for source_epgName: Valid special characters are: . - _</span>
+                        </a> -->
+                        <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                                <clr-icon shape="info-circle" size="24"></clr-icon>
+                                <span class="tooltip-content">Source EPG Name</span>
+                          </a>
+                    </div>
+                </div>                     
+                <div class="form-group" [formGroup]="onboardaddform">
+                    <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'consumedContract')}">
+                        <input type="text" id="consumedContract" formControlName="consumedContract" placeholder="Consumed Contract Name *">
+                        <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                        <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                            [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'consumedContract')}">
+                        </clr-icon>
+                        <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'consumedContract')">
+                            Invalid syntax for consumedContract: Valid special characters are: . - _</span>
+                        </a> -->
+                        <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                                <clr-icon shape="info-circle" size="24"></clr-icon>
+                                <span class="tooltip-content">Consume Contract Name</span>
+                          </a>
+                    </div>
+                </div>                    
+            </div>
+            <div class="form-line">
+                <div class="form-group" [formGroup]="onboardaddform">
+                    <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'dest_epgName')}">
+                        <input type="text" id="dest_epgName" formControlName="dest_epgName" placeholder="Destination EPG Name *">
+                        <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                        <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                            [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'dest_epgName')}">
+                        </clr-icon>
+                        <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'dest_epgName')">
+                            Invalid syntax for dest_epgName: Valid special characters are: . - _</span>
+                        </a> -->
+                        <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                                <clr-icon shape="info-circle" size="24"></clr-icon>
+                                <span class="tooltip-content">Destination EPG Name</span>
+                          </a>
+                    </div>
+                </div>                     
+                <div class="form-group" [formGroup]="onboardaddform">
+                    <div class="input-group" [ngClass]="{'invalid-input': isInvalid(onboardaddform, 'providedContract')}">
+                        <input type="text" id="providedContract" formControlName="providedContract" placeholder="Provided Contract Name *">
+                        <!-- <a role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-left">
+                        <clr-icon class="clr-validate-icon icon-error" shape="exclamation-circle"
+                            [ngClass]="{'icon-transparent' : !isInvalid(onboardaddform, 'providedContract')}">
+                        </clr-icon>
+                        <span class="tooltip-content error-message" *ngIf="isInvalid(onboardaddform, 'providedContract')">
+                            Invalid syntax for providedContract: Valid special characters are: . - _</span>
+                        </a> -->
+                        <a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
+                                <clr-icon shape="info-circle" size="24"></clr-icon>
+                                <span class="tooltip-content">Provided Contract Name</span>
+                          </a>
+                    </div>
+                </div>                    
+            </div>   
+            </section>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline" (click)="createOnboardCancel(onboardaddform)">Cancel</button>
+            <button type="submit" class="btn btn-primary" [ngClass]="{'disabled': onboardaddform.invalid}">Create</button>
+          </div>
+        </clr-modal>
+      </form>
+    </div>
+  </div>
