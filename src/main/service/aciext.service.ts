@@ -59,7 +59,7 @@ export class AciextService {
     return this.getOrgId()
       .mergeMap(orgId => {
         return this.http
-         .post(`${this.apiRootUrl}/api/org/${orgId}/aciext/user`, value, this.headers)
+         .post(`${this.apiRootUrl}/api/org/${orgId}/aciext/onboard`, value, this.headers)
          .map((res: Response) => JSON.parse(res.text()))
          .catch(this.handleError);
       });
