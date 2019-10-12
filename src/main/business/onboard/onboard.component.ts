@@ -6,6 +6,8 @@ import { NgForm, FormGroup, FormControl, Validators, FormBuilder, ValidatorFn, A
 //Added by Elaya for clr-radio 
 //import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
+import {ViewChild} from "@angular/core";
+import {ClrWizard} from "@clr/angular";
 
 
 @Component({
@@ -102,6 +104,18 @@ export class OnboardComponent implements OnInit {
 
   
   constructor(private aciextService: AciextService) { }
+
+  @ViewChild("wizardxl") wizardExtraLarge: ClrWizard;
+     xlOpen: boolean = false;
+     skipStepTwo: boolean = true;
+
+     toggleStepTwo() {
+      this.skipStepTwo = !this.skipStepTwo;
+    }
+
+     openWizardModal() {
+      this.xlOpen = !this.xlOpen;
+    }
 
 
   ngOnInit(): void {

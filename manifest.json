@@ -1,6 +1,6 @@
 {
-    "urn": "vmware:vcloud:ezdc:aciext",
-    "name": "CISCO-ACI Quick Tenant Onboard V1.0",
+    "urn": "vmware:vcloud:ezdc:aciextwiz",
+    "name": "CISCO-ACI Wizard Ealya",
     "containerVersion": "9.1.0",
     "version": "1.0.0",
     "scope": ["tenant", "service-provider"],

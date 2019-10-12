@@ -13,6 +13,37 @@
             <clr-icon aria-hidden="true" shape="close" (click)="closeOnboardAckAlert()"></clr-icon>
         </button>
     </div>
+    <clr-wizard #wizardxl [(clrWizardOpen)]="xlOpen">
+      <clr-wizard-title>ACI Tenant Onbarading</clr-wizard-title>
+  
+      <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
+      <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
+      <clr-wizard-button [type]="'next'">Next</clr-wizard-button>
+      <clr-wizard-button [type]="'finish'">Finish</clr-wizard-button>
+  
+      <clr-wizard-page>
+        <ng-template clrPageTitle>Title for page 1</ng-template>
+        <ng-template clrPageNavTitle>Step 1</ng-template>
+          ...
+          <p>
+            <button class="btn btn-secondary" (click)="onboard.toggleStepTwo()">
+                <span *ngIf="skipStepTwo">Show Page 2</span>
+                <span *ngIf="!skipStepTwo">Hide Page 2</span>
+            </button>
+        </p>
+      </clr-wizard-page>
+  
+      <clr-wizard-page *ngIf="!skipStepTwo">
+        <ng-template clrPageTitle>Title for page 2</ng-template>
+        <ng-template clrPageNavTitle>Step 2</ng-template>
+          ...
+      </clr-wizard-page>
+  
+      <clr-wizard-page>
+          <ng-template clrPageTitle>Step 3</ng-template>
+          ...
+      </clr-wizard-page>
+  </clr-wizard>
     <div>
       <!-- <clr-datagrid [(clrDgSingleSelected)]="selectedOnboard" [clrDgLoading]="onboarddatagridloading">
         <clr-dg-column>Tenant Onboard</clr-dg-column>  
@@ -30,7 +61,8 @@
         <clr-icon shape="refresh"></clr-icon>
         <span class="tooltip-content tooltip-refresh">Refresh  list</span>
       </button>-->
-      <button class="btn btn-sm btn-secondary lets-strat-btn" (click)="openOnboardModal()" [disabled]="onboarddatagridloading">Let's Start</button> 
+      <button class="btn btn-sm btn-secondary lets-strat-btn" (click)="openWizardModal()" [disabled]="onboarddatagridloading">Let's Start with Wizard</button> 
+      <!-- <button class="btn btn-sm btn-secondary lets-strat-btn" (click)="openOnboardModal()" [disabled]="onboarddatagridloading">Let's Start</button>  -->
 
         
   
